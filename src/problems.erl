@@ -55,6 +55,11 @@ compress([H|T]) ->
  [H] ++ compress(T).
 
 
+% P09
+pack([]) -> [];
+pack([H, H|T]) -> [[H, H]] ++ pack(T);
+pack([H|T]) -> [H] ++ pack(T).
+
 % All done; here are the tests
 test() ->
   X = ["A", "B", "C", "D", "E", "F", "G"],
@@ -65,6 +70,7 @@ test() ->
   test_is_palindrome(),
   test_flatten(X),
   test_compress(),
+  test_pack(),
   exit(0).
 
 test_last(List) ->
@@ -88,3 +94,6 @@ test_length(List) ->
 
 test_compress() ->
   ['a','b', 'c', 'd'] = compress(['a', 'b', 'b', 'c', 'c', 'd']).
+
+test_pack() ->
+  [a, b, [c, c], d] = pack([a, b, c, c, d]).
