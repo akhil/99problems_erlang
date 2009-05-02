@@ -46,7 +46,13 @@ flatten([H|T]) ->
 flatten(AnythingElse) ->
   [AnythingElse].
 
-
+% P08
+compress([]) ->
+  [];
+compress([H,H|T]) ->
+ [H] ++ compress(T);
+compress([H|T]) ->
+ [H] ++ compress(T).
 
 
 % All done; here are the tests
@@ -58,6 +64,7 @@ test() ->
   test_length(X),
   test_is_palindrome(),
   test_flatten(X),
+  test_compress(),
   exit(0).
 
 test_last(List) ->
@@ -78,3 +85,6 @@ test_flatten(List) ->
 
 test_length(List) ->
   7 = listlength(List).
+
+test_compress() ->
+  ['a','b', 'c', 'd'] = compress(['a', 'b', 'b', 'c', 'c', 'd']).
