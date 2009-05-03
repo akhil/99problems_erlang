@@ -58,11 +58,11 @@ pack([]) -> [];
 pack([H|T]) -> pack_duplicates(H, [H], T).
 
 pack_duplicates(D, DupsSoFar, [D|T]) -> pack_duplicates(D, [D|DupsSoFar], T);
-pack_duplicates(D, DupsSoFar, T) -> [DupsSoFar | pack(T)].
+pack_duplicates(_, DupsSoFar, T) -> [DupsSoFar | pack(T)].
   
 
 % P10
-encode(List) -> [[listlength(T) + 1, X] || [X|T] <- pack(List)]. 
+encode(List) -> [{listlength(T) + 1, X} || [X|T] <- pack(List)]. 
   
   
 % All done; here are the tests
@@ -105,4 +105,4 @@ test_pack() ->
   [[a], [b,b], [c, c, c], [d]] = pack([a, b, b, c, c, c, d]).
 
 test_encode() ->
-  [[1,a], [2, b], [3, c], [1,d]] = encode([a, b, b, c, c, c, d]).
+  [{1,a}, {2, b}, {3, c}, {1,d}] = encode([a, b, b, c, c, c, d]).
