@@ -49,20 +49,17 @@ flatten(AnythingElse) ->
 % P08
 compress([]) ->
   [];
-compress([H,H|T]) ->
- compress_duplicates([H,H], T);
-compress([H|T]) ->
- [H] ++ compress(T).
+compress([H,H|T]) -> compress([H|T]);
+compress([H|T]) -> [H] ++ compress(T).
 
-compress_duplicates([H|R], [H | T]) ->
-  compress_duplicates([H|R] ++ H, T);
-compress_duplicates(List, Rest) -> [List, Rest].
 
 % P09
 pack([]) -> [];
-pack([H, H|T]) -> [[H, H]] ++ pack(T);
-pack([H|T]) -> [[H]] ++ pack(T).
+pack([H|T]) -> pack_duplicates(H, [H], T).
 
+pack_duplicates(D, DupsSoFar, [D|T]) -> pack_duplicates(D, [D|DupsSoFar], T);
+pack_duplicates(D, DupsSoFar, T) -> [DupsSoFar | pack(T)].
+  
 
 % P10
 encode(List) -> [[listlength(T) + 1, X] || [X|T] <- pack(List)]. 
@@ -102,7 +99,7 @@ test_length(List) ->
   7 = listlength(List).
 
 test_compress() ->
-  ['a','b', 'c', 'd'] = compress(['a', 'b', 'b', 'c', 'c', 'c', 'd']).
+  ['a','b', 'c', 'd'] = compress(['a', 'b', 'b', 'c', 'c', 'c', 'c', 'd']).
 
 test_pack() ->
   [[a], [b,b], [c, c, c], [d]] = pack([a, b, b, c, c, c, d]).
