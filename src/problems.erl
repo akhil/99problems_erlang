@@ -64,7 +64,12 @@ pack_duplicates(_, DupsSoFar, T) -> [DupsSoFar | pack(T)].
 % P10
 encode(List) -> [{listlength(T) + 1, X} || [X|T] <- pack(List)]. 
   
-  
+% P11
+encode_modified(List) -> [modified_encoded_element(X) || X <- encode(List)].
+
+modified_encoded_element({1, E}) -> E;
+modified_encoded_element(Any) -> Any.
+
 % All done; here are the tests
 test() ->
   X = ["A", "B", "C", "D", "E", "F", "G"],
@@ -77,6 +82,7 @@ test() ->
   test_compress(),
   test_pack(),
   test_encode(),
+  test_encode_modified(),
   exit(0).
 
 test_last(List) ->
@@ -106,3 +112,6 @@ test_pack() ->
 
 test_encode() ->
   [{1,a}, {2, b}, {3, c}, {1,d}] = encode([a, b, b, c, c, c, d]).
+
+test_encode_modified() ->
+  [a, {2, b}, {3, c}, d] = encode_modified([a, b, b, c, c, c, d]).
