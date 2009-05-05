@@ -70,6 +70,13 @@ encode_modified(List) -> [modified_encoded_element(X) || X <- encode(List)].
 modified_encoded_element({1, E}) -> E;
 modified_encoded_element(Any) -> Any.
 
+% P12
+
+decode(List) -> flatten([decode_element(E) || E <- List]).
+
+decode_element({1, E}) -> E;
+decode_element({N, E}) -> [E|decode_element({N - 1, E})].
+
 % All done; here are the tests
 test() ->
   X = ["A", "B", "C", "D", "E", "F", "G"],
@@ -83,6 +90,7 @@ test() ->
   test_pack(),
   test_encode(),
   test_encode_modified(),
+  test_decode(),
   exit(0).
 
 test_last(List) ->
@@ -115,3 +123,6 @@ test_encode() ->
 
 test_encode_modified() ->
   [a, {2, b}, {3, c}, d] = encode_modified([a, b, b, c, c, c, d]).
+
+test_decode() ->
+  [a, b, b, c, c, c, d] = decode([{1,a}, {2, b}, {3, c}, {1,d}]).
