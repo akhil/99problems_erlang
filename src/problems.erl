@@ -105,7 +105,8 @@ test() ->
   test_encode_modified(),
   test_decode(),
   test_encode_direct(),
-  exit(0).
+  io:format("Tests passed.~n"),
+  init:stop().
 
 test_last(List) ->
  "G" = last(List).
