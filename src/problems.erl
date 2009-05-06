@@ -94,6 +94,13 @@ encode_duplicates(Tuple, T) ->
 duplicate([H|T]) -> [H,H|duplicate(T)];
 duplicate([]) -> [].
 
+% P15
+duplicateN(N, [H|T]) -> makeN	(N, H) ++ duplicateN(N, T);
+duplicateN(_, []) -> [].
+
+makeN(1, E) -> [E];
+makeN(N, E) -> [E|makeN(N-1, E)].
+
 % All done; here are the tests
 test() ->
   X = ["A", "B", "C", "D", "E", "F", "G"],
@@ -110,6 +117,7 @@ test() ->
   test_decode(),
   test_encode_direct(),
   test_duplicate(),
+  test_duplicateN(),
   io:format("Tests passed.~n"),
   init:stop().
 
@@ -152,3 +160,6 @@ test_encode_direct() ->
 
 test_duplicate() ->
   [a,a,b,b,b,b,c,c,d,d] = duplicate([a, b, b, c, d]).
+
+test_duplicateN() ->
+  [a,a,a,b,b,b,b,b,b,c,c,c,d,d,d] = duplicateN(3, [a, b, b, c, d]).
