@@ -77,6 +77,19 @@ decode(List) -> flatten([decode_element(E) || E <- List]).
 decode_element({1, E}) -> E;
 decode_element({N, E}) -> [E|decode_element({N - 1, E})].
 
+% P13
+encode_direct([E,E|T]) ->
+  encode_duplicates({2, E}, T);
+encode_direct([H|T]) ->
+  [{1, H}|encode_direct(T)];
+encode_direct(Any) ->
+  Any.
+
+encode_duplicates({Number, E}, [E|T]) ->
+  encode_duplicates({Number + 1, E}, T);
+encode_duplicates(Tuple, T) ->
+  [Tuple|encode_direct(T)].
+
 % All done; here are the tests
 test() ->
   X = ["A", "B", "C", "D", "E", "F", "G"],
@@ -91,6 +104,7 @@ test() ->
   test_encode(),
   test_encode_modified(),
   test_decode(),
+  test_encode_direct(),
   exit(0).
 
 test_last(List) ->
@@ -126,3 +140,6 @@ test_encode_modified() ->
 
 test_decode() ->
   [a, b, b, c, c, c, d] = decode([{1,a}, {2, b}, {3, c}, {1,d}]).
+
+test_encode_direct() ->
+  [{1,a}, {2, b}, {3, c}, {1,d}] = encode_direct([a, b, b, c, c, c, d]).
