@@ -1,0 +1,4 @@
+h1. Playing with Erlang.
+
+I did a decent amount of Erlang over a year ago.
+Doing these problems to remember/internalize the syntax.
