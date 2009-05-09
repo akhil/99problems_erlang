@@ -101,6 +101,14 @@ duplicateN(_, []) -> [].
 makeN(1, E) -> [E];
 makeN(N, E) -> [E|makeN(N-1, E)].
 
+% P16
+dropNth(N, List) -> reverse(dropAt(N, 1, List, [])).
+
+dropAt(At, At, [_|T], Result) -> dropAt(At, 1, T, Result);
+dropAt(_, _, [], Result) -> Result;
+dropAt(At, Current, [H|T], Result) -> dropAt(At, Current + 1, T, [H|Result]).
+  
+
 % All done; here are the tests
 test() ->
   X = ["A", "B", "C", "D", "E", "F", "G"],
@@ -118,6 +126,7 @@ test() ->
   test_encode_direct(),
   test_duplicate(),
   test_duplicateN(),
+  test_dropNth(),
   io:format("Tests passed.~n"),
   init:stop().
 
@@ -163,3 +172,6 @@ test_duplicate() ->
 
 test_duplicateN() ->
   [a,a,a,b,b,b,b,b,b,c,c,c,d,d,d] = duplicateN(3, [a, b, b, c, d]).
+
+test_dropNth() ->
+  [a,b,d,e,g,h,j] = dropNth(3, [a,b,c,d,e,f,g,h,i,j]).
