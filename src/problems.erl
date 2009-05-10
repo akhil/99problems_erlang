@@ -117,6 +117,11 @@ split(N, List) -> splitIntoTwo(1, N, [], List).
 splitIntoTwo(FirstLength, FirstLength, FirstHalf, [H|T]) -> {FirstHalf ++ [H], T};
 splitIntoTwo(Current, FirstLength, FirstHalf, [H|T]) -> splitIntoTwo(Current + 1, FirstLength, FirstHalf++ [H], T).
 
+% P18
+slice(_, 0, _) -> [];
+slice(0, End, [H|T]) -> [H|slice(0, End - 1, T)];
+slice(Start, End, [_|T]) -> slice(Start - 1, End - 1, T).
+
 % All done; here are the tests
 test() ->
   X = ["A", "B", "C", "D", "E", "F", "G"],
@@ -136,6 +141,7 @@ test() ->
   test_duplicateN(),
   test_dropNth(),
   test_split(),
+  test_slice(),
   io:format("Tests passed.~n"),
   init:stop().
 
@@ -187,3 +193,6 @@ test_dropNth() ->
 
 test_split() ->
   {[a,b,c], [d,e,f,g]} = split(3, [a,b,c,d,e,f,g]).
+
+test_slice() ->
+  [d,e,f,g] = slice(3, 7, [a,b,c,d,e,f,g,h,i,j,k]).
