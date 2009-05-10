@@ -107,7 +107,15 @@ dropNth(N, List) -> reverse(dropAt(N, 1, List, [])).
 dropAt(At, At, [_|T], Result) -> dropAt(At, 1, T, Result);
 dropAt(_, _, [], Result) -> Result;
 dropAt(At, Current, [H|T], Result) -> dropAt(At, Current + 1, T, [H|Result]).
-  
+ 
+
+% P17
+split(0, List) -> {[], List};
+split(_, []) -> {[],[]};
+split(N, List) -> splitIntoTwo(1, N, [], List).
+
+splitIntoTwo(FirstLength, FirstLength, FirstHalf, [H|T]) -> {FirstHalf ++ [H], T};
+splitIntoTwo(Current, FirstLength, FirstHalf, [H|T]) -> splitIntoTwo(Current + 1, FirstLength, FirstHalf++ [H], T).
 
 % All done; here are the tests
 test() ->
@@ -127,6 +135,7 @@ test() ->
   test_duplicate(),
   test_duplicateN(),
   test_dropNth(),
+  test_split(),
   io:format("Tests passed.~n"),
   init:stop().
 
@@ -175,3 +184,6 @@ test_duplicateN() ->
 
 test_dropNth() ->
   [a,b,d,e,g,h,j] = dropNth(3, [a,b,c,d,e,f,g,h,i,j]).
+
+test_split() ->
+  {[a,b,c], [d,e,f,g]} = split(3, [a,b,c,d,e,f,g]).
